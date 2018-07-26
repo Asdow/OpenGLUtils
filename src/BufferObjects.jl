@@ -36,7 +36,7 @@ end
 
 function setVertexAttribute!(layout, dataLength, dataStride, dataOffset)
     # NOTE dataOffset needs to be in Ptr{Void} form and using the intrinsic bitcast function makes it work.
-    cOffset = Base.bitcast( Ptr{Void}, dataOffset )
+    cOffset = Base.bitcast( Ptr{Nothing}, dataOffset )
 
     GL.glVertexAttribPointer(
         layout,

@@ -21,7 +21,7 @@ Calculates the time elapsed since last frame.
 Returns frameTime in seconds (Float32) and lastFrame in DateTime
 """
 function calculateFrameTime(lastFrame)
-    currentFrame = now()
+    currentFrame = Dates.now()
     frameTime = convert( Float32, Dates.value(currentFrame - lastFrame) ) * 0.001f0
     lastFrame = currentFrame
     return frameTime, lastFrame
@@ -34,7 +34,7 @@ Calculates the time elapsed since last frame.
 Returns frameTime in milliseconds (Int64) and lastFrame in DateTime
 """
 function calculateFrameTime2(lastFrame)
-    currentFrame = now()
+    currentFrame = Dates.now()
     frameTime = Dates.value(currentFrame - lastFrame)
     lastFrame = currentFrame
     return frameTime, lastFrame

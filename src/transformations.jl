@@ -219,11 +219,11 @@ worldUpVector = direction vector specifying the up vector in world coordinates.
 """
 function lookAtMatrix( cameraWorldPos::AbstractVector{T}, cameraTarget::AbstractVector{T}, worldUpVector::AbstractVector{T} ) where {T}
     # cameraDirection points FROM the cameraTarget TO the cameraWorldPos. Unintuitive, but whatevs.
-    cameraDirection = normalize( cameraWorldPos - cameraTarget )
+    cameraDirection = linAlg.normalize( cameraWorldPos - cameraTarget )
     # Directionvector defining the camera's right vector is defined through an up vector in world coordinates.
-    cameraRightVector = normalize( cross( worldUpVector, cameraDirection ) )
+    cameraRightVector = linAlg.normalize( linAlg.cross( worldUpVector, cameraDirection ) )
     # Camera up vector can then be calculated from direction and right vectors
-    cameraUpVector = cross( cameraDirection, cameraRightVector )
+    cameraUpVector = linAlg.cross( cameraDirection, cameraRightVector )
 
     # Create a lookAt matrix that transforms the world coordinates to view space.
     T0 = zero(T)

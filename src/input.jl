@@ -72,7 +72,7 @@ function mouseCallback(window, mouse, camera)
     frontY = sin( pitchRad )
     frontZ = sin(yawRad) * cosPitch
 
-    camera.target = normalize( SVec3(frontX, frontY, frontZ) )
+    camera.target = linAlg.normalize( SVec3(frontX, frontY, frontZ) )
     return nothing
 end
 
@@ -98,10 +98,10 @@ function WASD(window, camera::Camera{T}, frameTime) where {T}
         cameraWorldPos -= cameraSpeed*cameraTarget
     end
     if GLFW.GetKey( window, GLFW.KEY_A )
-        cameraWorldPos -= normalize( cross(cameraTarget, worldUpVector) ) * cameraSpeed
+        cameraWorldPos -= linAlg.normalize( linAlg.cross(cameraTarget, worldUpVector) ) * cameraSpeed
     end
     if GLFW.GetKey( window, GLFW.KEY_D )
-        cameraWorldPos += normalize( cross(cameraTarget, worldUpVector) ) * cameraSpeed
+        cameraWorldPos += linAlg.normalize( linAlg.cross(cameraTarget, worldUpVector) ) * cameraSpeed
     end
 
     camera.position = cameraWorldPos;
