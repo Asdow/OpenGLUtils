@@ -1,6 +1,7 @@
 __precompile__()
 module GLU
 
+using StaticArrays
 using StaticArrayUtils
 
 import FileIO

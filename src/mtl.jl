@@ -1,9 +1,22 @@
-mutable struct Material
+mutable struct mMaterial
     name::String
-    Ns::Float32
     Ka::SVec{3,Float32}
     Kd::SVec{3,Float32}
     Ks::SVec{3,Float32}
+    Ns::Float32
+    Ni::Float32
+    d::Float32
+    illum::UInt32
+end
+
+
+
+struct Material
+    name::String
+    Ka::SVec{3,Float32}
+    Kd::SVec{3,Float32}
+    Ks::SVec{3,Float32}
+    Ns::Float32
     Ni::Float32
     d::Float32
     illum::UInt32
@@ -21,8 +34,7 @@ function loadMTL(path::String)
     defd = 0.0f0
     defillum = 0
 
-
-    materials = Material[]
+    mutablematerials = mMaterial[]
 
     stream = open(path)
     for wholeLine in eachline(stream)
@@ -33,40 +45,40 @@ function loadMTL(path::String)
             command = popfirst!(lines)
 
             if command == "newmtl"
-                push!(materials, Material(defname, defNs, defKa, defKd, defKs, defNi, defd, defillum))
+                push!(mutablematerials, mMaterial(defname, defKa, defKd, defKs, defNs, defNi, defd, defillum))
 
                 name = lines[end]
-                materials[end].name = name
-
+                mutablematerials[end].name = name
             elseif command == "Ns"
                 Ns = parse(Float32, lines[end])
-                materials[end].Ns = Ns
-
+                mutablematerials[end].Ns = Ns
             elseif command == "Ka"
                 Ka = SVec3(parse.(Float32, lines))
-                materials[end].Ka = Ka
-
+                mutablematerials[end].Ka = Ka
             elseif command == "Kd"
                 Kd = SVec3(parse.(Float32, lines))
-                materials[end].Kd = Kd
-
+                mutablematerials[end].Kd = Kd
             elseif command == "Ks"
                 Ks = SVec3(parse.(Float32, lines))
-                materials[end].Ks = Ks
-
+                mutablematerials[end].Ks = Ks
             elseif command == "Ni"
                 Ni = parse(Float32, lines[end])
-                materials[end].Ni = Ni
+                mutablematerials[end].Ni = Ni
             elseif command == "d"
                 d = parse(Float32, lines[end])
-                materials[end].d = d
+                mutablematerials[end].d = d
             elseif command == "illum"
                 illum = parse(UInt32, lines[end])
-                materials[end].illum = illum
+                mutablematerials[end].illum = illum
             end
         end
     end
+    close(stream)
 
 
+    materials = Material[]
+    for material in mutablematerials
+        push!(materials, Material(material.name, material.Ka, material.Kd, material.Ks, material.Ns, material.Ni, material.d, material.illum))
+    end
     return materials
 end
