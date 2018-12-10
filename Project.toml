@@ -4,6 +4,7 @@ uuid = "364390f0-8ff4-11e8-3768-ffcef270d860"
 version = "0.1.0"
 
 [deps]
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 StaticArrayUtils = "efc909a0-8fe6-11e8-0c75-6984a2bbfd9a"
 FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
 ModernGL = "66fc600b-dfda-50eb-8b99-91cfa97b1301"
