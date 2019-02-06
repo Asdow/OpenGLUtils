@@ -65,9 +65,15 @@ function loadOBJ(path::String)
             elseif command == "vn"
                 push!( temp_normals, parse.(Float32,lines) )
             elseif command == "vt"
-                push!( temp_texturecoords, parse.(Float32,lines) )
+                uvw = parse.(Float32, lines)
+                # HACK strip the w coordinate if encountered. TODO save appropriate uvw type texture coordinate.
+                if length(uvw) > 2
+                    push!( temp_texturecoords, TextureCoordinate(uvw[1], uvw[2]) )
+                else
+                    push!( temp_texturecoords, uvw )
+                end
             # Handle faces
-        elseif command == "f"
+            elseif command == "f"
                 # Handle missing texture coordinate indices case, ie.
                 # f v1//vn1 v2//vn2 v3//vn3 ...
                 if any( x->occursin("//", x), lines )
@@ -85,7 +91,7 @@ function loadOBJ(path::String)
                     append!( normalFaces[end], normalIndices )
                 # Handle full indices case, ie.
                 # f v1/vt1/vn1 v2/vt2/vn2 v3/vt2/vn3 ...
-            elseif any(x->occursin("/", x), lines)
+                elseif any(x->occursin("/", x), lines)
                     indexes = split.(lines, "/")
 
                     vertIndices = UInt32[]
